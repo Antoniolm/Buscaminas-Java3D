@@ -58,6 +58,7 @@ public class Bloque extends BranchGroup {
     public void activarBomba(){
         Texture texture = new TextureLoader ("imgs/bomba.png", null).getTexture();
         ap.setTexture (texture);
+        
     }
     
     public void activarAcierto(){
@@ -79,9 +80,10 @@ public class Bloque extends BranchGroup {
         return posy;
     }
     public void activarCasilla(){
-      posicionReal.y+=8.0f;
+      posicionReal.y-=1.2f;
       transformtrans.setTranslation(posicionReal);
       translacion.setTransform(transformtrans);
+      activado=true;
     }
     public boolean getActivado(){
         return activado;

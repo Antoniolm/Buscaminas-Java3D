@@ -27,15 +27,14 @@ public class Tabla extends BranchGroup{
         ap.setColoringAttributes(color);
         Box box = new Box(9.0f, 1.0f, 9.0f, Primitive.ENABLE_APPEARANCE_MODIFY, ap);
         
-        box.setPickable(true);
-        box.setUserData(this);
+        box.setPickable(false);
         
         matrizbloques=new ArrayList<ArrayList<Bloque>>();
         ArrayList<Bloque> auxArray;
         //Translacion que nos permite ubicar el bloque en la posicion 0,0 de nuestra
         //tabla para que desde esa posicion se posicionen todos los bloques en su lugar
         //correspondiente
-        Vector3f vector=new Vector3f(-7.0f,1.0f,-7f);
+        Vector3f vector=new Vector3f(-7.0f,2.0f,-7f);
         
         for(int i=0;i<8;i++){
             vector.x=-7f;
