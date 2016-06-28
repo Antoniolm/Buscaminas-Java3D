@@ -64,8 +64,19 @@ public class Partida {
     
     BranchGroup bg=new BranchGroup();
     bg.addChild(rotacion);    
-    //Compilamos los tableros
+    
+    //Añadimos el picking al bg
+    Picking picar=new Picking(canvas,this);
+    picar.setSchedulingBounds(new BoundingSphere(new Point3d(0,0,0),300.0f));
+    picar.setStatus(bg);
+    
+    bg.addChild(picar);
+    
+    //Compilamos los BranchGroup
     bg.compile();
+    
+
+    
     
     //Añadimos nuestros tableros al locale
     local.addBranchGraph(bg);
@@ -78,4 +89,13 @@ public class Partida {
     visualizationWindow.setVisible(true);
     }
     
+    
+    
+    void procesarAccion(Bloque bloqueActual,int opc){
+    if(opc==0)
+        bloqueActual.activarAcierto();
+    else if(opc==1)
+        bloqueActual.activarMarca();
+    
+    }
 }

@@ -24,10 +24,13 @@ public class Bloque extends BranchGroup {
     private ColoringAttributes color;
     private Appearance ap;
     private boolean activado;
-    
+    private Transform3D transformtrans;
+    private TransformGroup translacion;
+    private Vector3f posicionReal;
     public Bloque(Vector3f vector,int x,int y){
         posx=x;
         posy=y;
+        posicionReal=new Vector3f((Vector3f) vector.clone());
         
         ap=new Appearance();
         ap.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
@@ -42,10 +45,11 @@ public class Bloque extends BranchGroup {
         box.setUserData(this);
         box.setPickable(true);
         
-        TransformGroup translacion = new TransformGroup();
-        Transform3D transformtranslation = new Transform3D();
-        transformtranslation.setTranslation(vector);
-        translacion.setTransform(transformtranslation); 
+        translacion = new TransformGroup();
+        translacion.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        transformtrans = new Transform3D();
+        transformtrans.setTranslation(posicionReal);
+        translacion.setTransform(transformtrans); 
 
         
        translacion.addChild(box);
@@ -58,11 +62,13 @@ public class Bloque extends BranchGroup {
     
     public void activarAcierto(){
         Texture texture = new TextureLoader ("imgs/aci1.png", null).getTexture();
+        activarCasilla();
         ap.setTexture (texture);
     }
     
     public void activarMarca(){
         Texture texture = new TextureLoader ("imgs/marca.png", null).getTexture();
+        activarCasilla();
         ap.setTexture (texture);
     }
     
@@ -71,6 +77,11 @@ public class Bloque extends BranchGroup {
     }
     public int getY(){
         return posy;
+    }
+    public void activarCasilla(){
+      posicionReal.y+=8.0f;
+      transformtrans.setTranslation(posicionReal);
+      translacion.setTransform(transformtrans);
     }
     public boolean getActivado(){
         return activado;
