@@ -50,7 +50,7 @@ public class Tabla extends BranchGroup{
         }
         
         this.addChild(box);
-          
+        setAcierto(0,0);
     }    
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
@@ -61,7 +61,7 @@ public class Tabla extends BranchGroup{
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
     */
-    public void setBombas(int x,int y){
+    public void setBomba(int x,int y){
         matrizbloques.get(y).get(x).activarBomba();
     }
     /**
