@@ -2,6 +2,10 @@ package Model;
 
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
@@ -18,9 +22,11 @@ import javax.vecmath.Vector3f;
  */
 public class Tabla extends BranchGroup{
     
-    private ArrayList<ArrayList<Bloque>> matrizbloques;
+    private ArrayList<ArrayList<Bloque>> matrizBloques;
+    private ArrayList<ArrayList<Integer>> matrizMinas;
     
-    public Tabla(Color3f colorp){
+    public Tabla(Color3f colorp,String fichero) throws IOException{
+        cargarMinas(fichero);
         Appearance ap=new Appearance();
         ap.setPolygonAttributes(new PolygonAttributes(PolygonAttributes.POLYGON_FILL, PolygonAttributes.CULL_BACK, 0.0f));
         ColoringAttributes color=new ColoringAttributes(colorp ,ColoringAttributes.SHADE_FLAT);
@@ -29,7 +35,7 @@ public class Tabla extends BranchGroup{
         
         box.setPickable(false);
         
-        matrizbloques=new ArrayList<ArrayList<Bloque>>();
+        matrizBloques=new ArrayList<ArrayList<Bloque>>();
         ArrayList<Bloque> auxArray;
         //Translacion que nos permite ubicar el bloque en la posicion 0,0 de nuestra
         //tabla para que desde esa posicion se posicionen todos los bloques en su lugar
@@ -44,30 +50,61 @@ public class Tabla extends BranchGroup{
                 this.addChild(auxArray.get(j));
                 vector.x+=2f;
            }
-            matrizbloques.add(auxArray);
+            matrizBloques.add(auxArray);
            vector.z+=2;
         }
         
         this.addChild(box);
-        setAcierto(0,0);
+        
     }    
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
     */
-    public void setAcierto(int x,int y){
-        matrizbloques.get(y).get(x).activarAcierto();
+    public void setAcierto(int x,int y,int valor){
+        matrizBloques.get(y).get(x).activarAcierto();
     }
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
     */
     public void setBomba(int x,int y){
-        matrizbloques.get(y).get(x).activarBomba();
+        matrizBloques.get(y).get(x).activarBomba();
     }
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
     */
     public void setMarca(int x,int y){
-        matrizbloques.get(y).get(x).activarMarca();
+        matrizBloques.get(y).get(x).activarMarca();
     }
     
+    public void cargarMinas(String fichero)throws FileNotFoundException, IOException{
+      String cadena;
+      matrizMinas=new ArrayList<ArrayList<Integer>>();
+      ArrayList<Integer> auxArray=new ArrayList<Integer>();
+      FileReader f = new FileReader(fichero);
+      BufferedReader b = new BufferedReader(f);
+      while((cadena = b.readLine())!=null) {
+          
+          for(int i=0;i<cadena.length();i++)
+            auxArray.add(Integer.parseInt(""+cadena.charAt(i)));
+          
+          matrizMinas.add((ArrayList<Integer>) auxArray.clone());
+          auxArray.clear();
+      }
+      b.close();
+      
+      //Prueba imprimiendo la matriz de minas
+      for(int i=0;i<matrizMinas.size();i++){
+          for(int j=0;j<matrizMinas.get(i).size();j++)
+              System.out.print(" "+matrizMinas.get(i).get(j)+" ");
+          System.out.println("");     
+              
+      }
+    }
+    public void actualizarTabla(int x,int y){
+        if(matrizMinas.get(y).get(x)==9)
+            setBomba(x,y);
+        else 
+            setAcierto(x,y,matrizMinas.get(y).get(x));
+    
+    }
 }

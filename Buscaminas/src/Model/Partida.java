@@ -25,6 +25,7 @@ public class Partida {
     private Fondo background;
     Tabla tabla;
     
+    
     public Partida() throws IOException{
 
     Canvas3D canvas = new Canvas3D (SimpleUniverse.getPreferredConfiguration());
@@ -53,7 +54,7 @@ public class Partida {
 
     //Color del tablero
    Color3f color=new Color3f(0.2f, 0.9f, 0.2f);
-   tabla=new Tabla(color);
+   tabla=new Tabla(color,"plantillas/plantilla1.txt");
    //Ponemos la tabla en vertical 
     TransformGroup rotacion=new TransformGroup();
     Transform3D rotacionX=new Transform3D();
@@ -91,11 +92,11 @@ public class Partida {
     
     
     
-    void procesarAccion(Bloque bloqueActual,int opc){
-    if(opc==0)
-        bloqueActual.activarAcierto();
-    else if(opc==1)
-        bloqueActual.activarMarca();
+    void procesarAccion(int posx,int posy,int opc){
+    if(opc==0)// Se pulsa una casilla para ver si hay bomba o no
+        tabla.actualizarTabla(posx, posy);
+    else if(opc==1)//Se marca una casilla como una bandera
+        tabla.setMarca(posx,posy);
     
     }
 }

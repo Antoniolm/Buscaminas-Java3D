@@ -53,13 +53,15 @@ public class Picking extends Behavior{
             Node p=pi.getNode();
             Primitive padre = (Primitive) p.getParent();
             Bloque objeto = (Bloque) padre.getUserData();
+            int posX=objeto.getX();
+            int posY=objeto.getY();
             if(!objeto.getActivado()){
                 switch(mouse.getButton()){
                     case MouseEvent.BUTTON1:
-                    partida.procesarAccion(objeto,0);
+                    partida.procesarAccion(posX,posY,0);
                     break;
                     case MouseEvent.BUTTON3:
-                    partida.procesarAccion(objeto,1);
+                    partida.procesarAccion(posX,posY,1);
                     break;
                 }
             }
