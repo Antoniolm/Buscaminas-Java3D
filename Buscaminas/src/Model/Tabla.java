@@ -31,7 +31,7 @@ public class Tabla extends BranchGroup{
         ap.setPolygonAttributes(new PolygonAttributes(PolygonAttributes.POLYGON_FILL, PolygonAttributes.CULL_BACK, 0.0f));
         ColoringAttributes color=new ColoringAttributes(colorp ,ColoringAttributes.SHADE_FLAT);
         ap.setColoringAttributes(color);
-        Box box = new Box(9.0f, 1.0f, 9.0f, Primitive.ENABLE_APPEARANCE_MODIFY, ap);
+        Box box = new Box(17.0f, 1.0f, 18.0f, Primitive.ENABLE_APPEARANCE_MODIFY, ap);
         
         box.setPickable(false);
         
@@ -40,12 +40,12 @@ public class Tabla extends BranchGroup{
         //Translacion que nos permite ubicar el bloque en la posicion 0,0 de nuestra
         //tabla para que desde esa posicion se posicionen todos los bloques en su lugar
         //correspondiente
-        Vector3f vector=new Vector3f(-7.0f,2.0f,-7f);
+        Vector3f vector=new Vector3f(-15.0f,2.0f,-15f);
         
-        for(int i=0;i<8;i++){
-            vector.x=-7f;
+        for(int i=0;i<16;i++){
+            vector.x=-15f;
             auxArray=new ArrayList<Bloque>();
-            for(int j=0;j<8;j++){
+            for(int j=0;j<16;j++){
                 auxArray.add(new Bloque(vector,j,i));
                 this.addChild(auxArray.get(j));
                 vector.x+=2f;

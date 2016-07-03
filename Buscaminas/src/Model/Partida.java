@@ -39,7 +39,7 @@ public class Partida {
     Locale local=new Locale(universe);
     
     //Camaras posicionada mirando al tablero
-    Camara camaraJuego=new Camara(canvas, 60.0f, 0.02f, 40.0f,0.01f,45,new Point3d(0.0,14.0,30.0), new Point3d(0.0,13.25,0.0), new Vector3d(0,1,0));
+    Camara camaraJuego=new Camara(canvas, 60.0f, 0.02f, 40.0f,0.01f,45,new Point3d(0.0,14.0,55.0), new Point3d(0.0,13.25,0.0), new Vector3d(0,1,0));
     
     //Compilamos todas las camaras
     camaraJuego.compile();
