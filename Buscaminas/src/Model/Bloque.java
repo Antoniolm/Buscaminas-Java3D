@@ -62,9 +62,11 @@ public class Bloque extends BranchGroup {
     }
     
     public void activarAcierto(int valor){
-        Texture texture = new TextureLoader ("imgs/aci"+valor+".png", null).getTexture();
-        activarCasilla();
-        ap.setTexture (texture);
+        if(!activado){
+            Texture texture = new TextureLoader ("imgs/aci"+valor+".png", null).getTexture();
+            activarCasilla();
+            ap.setTexture (texture);
+        }
     }
     
     public void activarMarca(){
@@ -79,6 +81,9 @@ public class Bloque extends BranchGroup {
     public int getY(){
         return posy;
     }
+    /**
+    * activa la casilla del tablero
+    */
     public void activarCasilla(){
       posicionReal.y-=1.2f;
       transformtrans.setTranslation(posicionReal);

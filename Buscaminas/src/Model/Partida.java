@@ -91,7 +91,11 @@ public class Partida {
     }
     
     
-    
+    /**
+    * Realiza una opción u otro segun el boton del raton clickeado
+    * ,es decir, si tenemos la opc 0 es descubrir una casilla y si
+    * es la opc 1 es marcar la casilla como bomba
+    */
     void procesarAccion(int posx,int posy,int opc){
     if(opc==0)// Se pulsa una casilla para ver si hay bomba o no
         tabla.actualizarTabla(posx, posy);
