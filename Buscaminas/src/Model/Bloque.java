@@ -61,8 +61,8 @@ public class Bloque extends BranchGroup {
         
     }
     
-    public void activarAcierto(){
-        Texture texture = new TextureLoader ("imgs/aci1.png", null).getTexture();
+    public void activarAcierto(int valor){
+        Texture texture = new TextureLoader ("imgs/aci"+valor+".png", null).getTexture();
         activarCasilla();
         ap.setTexture (texture);
     }

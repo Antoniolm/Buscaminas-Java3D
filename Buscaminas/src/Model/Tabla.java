@@ -69,7 +69,7 @@ public class Tabla extends BranchGroup{
     * Cambia la textura del bloque en la posicion x,y de la tabla
     */
     public void setAcierto(int x,int y,int valor){
-        matrizBloques.get(y).get(x).activarAcierto();
+        matrizBloques.get(y).get(x).activarAcierto(valor);
     }
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
