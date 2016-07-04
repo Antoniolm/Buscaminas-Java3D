@@ -54,7 +54,7 @@ public class Partida {
 
     //Color del tablero
    Color3f color=new Color3f(0.2f, 0.9f, 0.2f);
-   tabla=new Tabla(color,"plantillas/plantilla1.txt");
+   tabla=new Tabla(color,16,40);
    //Ponemos la tabla en vertical 
     TransformGroup rotacion=new TransformGroup();
     Transform3D rotacionX=new Transform3D();
