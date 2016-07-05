@@ -249,7 +249,8 @@ public class Tabla extends BranchGroup{
             if (y - 1 >= 0 && matrizMinas.get(y - 1).get(x) != 9) {
                 if(matrizMinas.get(y - 1).get(x) == 0 && !matrizBloques.get(y-1).get(x).getActivado())
                     elemSinComprobar.add(new PairInt(x,y-1));
-                setAcierto(x,y-1,matrizMinas.get(y-1).get(x));
+                if(!matrizBloques.get(y-1).get(x).getActivado())
+                    setAcierto(x,y-1,matrizMinas.get(y-1).get(x));
                 
             }
             
@@ -258,49 +259,58 @@ public class Tabla extends BranchGroup{
                 
                 if(matrizMinas.get(y + 1).get(x) ==0 && !matrizBloques.get(y+1).get(x).getActivado())
                     elemSinComprobar.add(new PairInt(x,y+1));
-                setAcierto(x,y+1,matrizMinas.get(y+1).get(x));
+                
+                if(!matrizBloques.get(y+1).get(x).getActivado())
+                    setAcierto(x,y+1,matrizMinas.get(y+1).get(x));
             }
 
             //Comprobamos la casilla izquierda
             if (x - 1 >= 0 && matrizMinas.get(y).get(x - 1) != 9) {
                 if(matrizMinas.get(y).get(x-1) ==0 && !matrizBloques.get(y).get(x-1).getActivado())
                     elemSinComprobar.add(new PairInt(x-1,y));
-                setAcierto(x-1,y,matrizMinas.get(y).get(x-1));
+                
+                if(!matrizBloques.get(y).get(x-1).getActivado())
+                    setAcierto(x-1,y,matrizMinas.get(y).get(x-1));
             }
             
             //Comprobamos la casilla derecha
             if (x + 1 < tamTablero && matrizMinas.get(y).get(x + 1) != 9) {
                 if(matrizMinas.get(y).get(x+1) ==0 && !matrizBloques.get(y).get(x+1).getActivado())
                     elemSinComprobar.add(new PairInt(x+1,y));
-                setAcierto(x+1,y,matrizMinas.get(y).get(x+1));
+                if( !matrizBloques.get(y).get(x+1).getActivado())
+                    setAcierto(x+1,y,matrizMinas.get(y).get(x+1));
             }
 
             //Comprobamos la casilla inferior izquierda
             if (y - 1 >= 0 && x - 1 >= 0 && matrizMinas.get(y - 1).get(x - 1) != 9) {
                 if(matrizMinas.get(y-1).get(x-1) ==0 && !matrizBloques.get(y-1).get(x-1).getActivado())
                     elemSinComprobar.add(new PairInt(x-1,y-1));
-                setAcierto(x-1,y-1,matrizMinas.get(y-1).get(x-1));
+                if(!matrizBloques.get(y-1).get(x-1).getActivado())
+                    setAcierto(x-1,y-1,matrizMinas.get(y-1).get(x-1));
             }
             
             //Comprobamos la casilla inferior derecha
             if (y - 1 >= 0 && x + 1 < tamTablero && matrizMinas.get(y - 1).get(x + 1) != 9) {
                 if(matrizMinas.get(y -1).get(x+1) ==0 && !matrizBloques.get(y-1).get(x+1).getActivado())
                     elemSinComprobar.add(new PairInt(x+1,y-1));
-                 setAcierto(x+1,y-1,matrizMinas.get(y-1).get(x+1));
+                if(!matrizBloques.get(y-1).get(x+1).getActivado())
+                    setAcierto(x+1,y-1,matrizMinas.get(y-1).get(x+1));
             }
             
             //Comprobamos la casilla superior izquierda
             if (y + 1 < tamTablero && x - 1 >= 0 && matrizMinas.get(y + 1).get(x - 1) != 9) {
                 if(matrizMinas.get(y + 1).get(x-1) ==0 && !matrizBloques.get(y+1).get(x-1).getActivado())
                     elemSinComprobar.add(new PairInt(x-1,y+1));
-                setAcierto(x-1,y+1,matrizMinas.get(y+1).get(x-1));
+                if( !matrizBloques.get(y+1).get(x-1).getActivado())
+                    setAcierto(x-1,y+1,matrizMinas.get(y+1).get(x-1));
             }
             
             //Comprobamos la casilla superior derecha
             if (y + 1 < tamTablero && x + 1 < tamTablero && matrizMinas.get(y + 1).get(x + 1) != 9) {
                 if(matrizMinas.get(y + 1).get(x+1) ==0 && !matrizBloques.get(y+1).get(x+1).getActivado())
                     elemSinComprobar.add(new PairInt(x+1,y+1));
-                setAcierto(x+1,y+1,matrizMinas.get(y+1).get(x+1));
+                if(!matrizBloques.get(y+1).get(x+1).getActivado())
+                    setAcierto(x+1,y+1,matrizMinas.get(y+1).get(x+1));
             }           
             
             elemSinComprobar.remove(0);
