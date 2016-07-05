@@ -33,7 +33,7 @@ public class Tabla extends BranchGroup{
         tamTablero=tam;
         numMinas=nminas;
         matrizMinas=new ArrayList<ArrayList<Integer>>();
-        //cargarMinas(fichero);
+        
         generarMinas();
         Appearance ap=new Appearance();
         ap.setPolygonAttributes(new PolygonAttributes(PolygonAttributes.POLYGON_FILL, PolygonAttributes.CULL_BACK, 0.0f));
@@ -64,24 +64,38 @@ public class Tabla extends BranchGroup{
         
         this.addChild(box);
         
-    }    
+    }  
+    
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
+    * la textura nueva es la de el nº de minas alrededor de la posición
     */
     public void setAcierto(int x,int y,int valor){
         matrizBloques.get(y).get(x).activarAcierto(valor);
     }
+    
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
+    * la textura nueva es la de bomba
     */
     public void setBomba(int x,int y){
         matrizBloques.get(y).get(x).activarBomba();
     }
+    
     /**
     * Cambia la textura del bloque en la posicion x,y de la tabla
+    * la textura nueva es la marcar una posición
     */
     public void setMarca(int x,int y){
         matrizBloques.get(y).get(x).activarMarca();
+    }
+    
+    /**
+    * Cambia la textura del bloque en la posicion x,y de la tabla
+    * vuelve a poner el bloque como no pulsado
+    */
+    public void setNoMarca(int x,int y){
+        matrizBloques.get(y).get(x).desactivarMarca();
     }
     
     
@@ -148,7 +162,7 @@ public class Tabla extends BranchGroup{
             }
         }
         
-        
+        //Impresion de los resultados
           for(int p=0;p<matrizMinas.size();p++){
           for(int j=0;j<matrizMinas.get(p).size();j++)
               System.out.print(" "+matrizMinas.get(p).get(j)+" ");

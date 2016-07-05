@@ -55,15 +55,22 @@ public class Picking extends Behavior{
             Bloque objeto = (Bloque) padre.getUserData();
             int posX=objeto.getX();
             int posY=objeto.getY();
-            if(!objeto.getActivado()){
-                switch(mouse.getButton()){
-                    case MouseEvent.BUTTON1:
-                    partida.procesarAccion(posX,posY,0);
+            
+            switch (mouse.getButton()) {
+                case MouseEvent.BUTTON1:
+                    if (!objeto.getActivado()){ //comprobamos si ya esta activada
+                        partida.procesarAccion(posX, posY, 0); //opcion para descubrir una casilla
+                    }
                     break;
-                    case MouseEvent.BUTTON3:
-                    partida.procesarAccion(posX,posY,1);
+                case MouseEvent.BUTTON3:
+                    if (!objeto.getActivado()){ //comprobamos si no esta activado
+                        partida.procesarAccion(posX, posY, 1); //opcion para marcar una casilla
+                    }
+                    else if(objeto.getMarcado()){ //si esta activado y es con un marca
+                            partida.procesarAccion(posX, posY, 2); //opción para desmarcar casilla
+                        }
+                        
                     break;
-                }
             }
         }
         

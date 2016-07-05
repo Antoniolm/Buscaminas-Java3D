@@ -101,6 +101,7 @@ public class Partida {
         tabla.actualizarTabla(posx, posy);
     else if(opc==1)//Se marca una casilla como una bandera
         tabla.setMarca(posx,posy);
-    
+        else
+            tabla.setNoMarca(posx, posy);
     }
 }
