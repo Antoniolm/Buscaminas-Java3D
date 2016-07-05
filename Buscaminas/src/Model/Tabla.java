@@ -48,7 +48,7 @@ public class Tabla extends BranchGroup{
         //Translacion que nos permite ubicar el bloque en la posicion 0,0 de nuestra
         //tabla para que desde esa posicion se posicionen todos los bloques en su lugar
         //correspondiente
-        Vector3f vector=new Vector3f(-15.0f,2.0f,-15f);
+        Vector3f vector=new Vector3f(-15.0f,2.0f,-14f);
         
         for(int i=0;i<tamTablero;i++){
             vector.x=-15f;
@@ -61,7 +61,7 @@ public class Tabla extends BranchGroup{
             matrizBloques.add(auxArray);
            vector.z+=2;
         }
-        
+        this.addChild(new Boton(new Vector3f(0.0f,1.0f,-16.5f),"imgs/boton01.png"));
         this.addChild(box);
         
     }  

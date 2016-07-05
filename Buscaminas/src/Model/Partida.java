@@ -8,6 +8,7 @@ import java.util.Random;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Group;
 import javax.media.j3d.Locale;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -24,7 +25,8 @@ import javax.vecmath.Vector3f;
 public class Partida {
     private Fondo background;
     Tabla tabla;
-    
+    Color3f color;//color del tablero
+    BranchGroup bgFlexible,bg;
     
     public Partida() throws IOException{
 
@@ -39,7 +41,7 @@ public class Partida {
     Locale local=new Locale(universe);
     
     //Camaras posicionada mirando al tablero
-    Camara camaraJuego=new Camara(canvas, 60.0f, 0.02f, 40.0f,0.01f,45,new Point3d(0.0,14.0,55.0), new Point3d(0.0,13.25,0.0), new Vector3d(0,1,0));
+    Camara camaraJuego=new Camara(canvas, 60.0f, 0.02f, 40.0f,0.01f,45,new Point3d(0.0,58.0,1.0), new Point3d(0.0,0.0,0.0), new Vector3d(0,1,0));
     
     //Compilamos todas las camaras
     camaraJuego.compile();
@@ -53,19 +55,19 @@ public class Partida {
     background.compile();
 
     //Color del tablero
-   Color3f color=new Color3f(0.2f, 0.9f, 0.2f);
+   color=new Color3f(0.2f, 0.9f, 0.2f);
    tabla=new Tabla(color,16,40);
-   //Ponemos la tabla en vertical 
-    TransformGroup rotacion=new TransformGroup();
-    Transform3D rotacionX=new Transform3D();
-    rotacionX.rotX(Math.PI/2);
-    rotacionX.setTranslation(new Vector3f(0,13.0f,0.0f));
-    rotacion.setTransform(rotacionX);
-    rotacion.addChild(tabla);
+   
+    bg=new BranchGroup();
+    bg.setCapability(Group.ALLOW_CHILDREN_WRITE);
+    bg.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+   
+    //bg que nos permite eliminar la tabla y crear otra
+    bgFlexible=new BranchGroup();
+    bgFlexible.setCapability(BranchGroup.ALLOW_DETACH);
+    bgFlexible.addChild(tabla);    
     
-    BranchGroup bg=new BranchGroup();
-    bg.addChild(rotacion);    
-    
+    bg.addChild(bgFlexible);
     //Añadimos el picking al bg
     Picking picar=new Picking(canvas,this);
     picar.setSchedulingBounds(new BoundingSphere(new Point3d(0,0,0),300.0f));
@@ -104,4 +106,21 @@ public class Partida {
         else
             tabla.setNoMarca(posx, posy);
     }
+    
+    /**
+     * 
+     */
+    public void reiniciarJuego(){
+        //quitamos la tabla
+        bgFlexible.detach();
+        
+        bgFlexible=new BranchGroup();
+        bgFlexible.setCapability(BranchGroup.ALLOW_DETACH);
+        tabla=new Tabla(color,16,40);
+        bgFlexible.addChild(tabla);
+        bg.addChild(bgFlexible);
+        //tabla=new Tabla(color,16,40);
+        //rotacion.addChild(tabla);
+    }
+    
 }

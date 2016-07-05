@@ -52,25 +52,32 @@ public class Picking extends Behavior{
         if(pi!=null){
             Node p=pi.getNode();
             Primitive padre = (Primitive) p.getParent();
-            Bloque objeto = (Bloque) padre.getUserData();
-            int posX=objeto.getX();
-            int posY=objeto.getY();
             
-            switch (mouse.getButton()) {
-                case MouseEvent.BUTTON1:
-                    if (!objeto.getActivado()){ //comprobamos si ya esta activada
-                        partida.procesarAccion(posX, posY, 0); //opcion para descubrir una casilla
-                    }
-                    break;
-                case MouseEvent.BUTTON3:
-                    if (!objeto.getActivado()){ //comprobamos si no esta activado
-                        partida.procesarAccion(posX, posY, 1); //opcion para marcar una casilla
-                    }
-                    else if(objeto.getMarcado()){ //si esta activado y es con un marca
-                            partida.procesarAccion(posX, posY, 2); //opción para desmarcar casilla
+            
+            //If para detectar cuando se ha pulsado boton y no un bloque
+            if(padre.getUserData().getClass().toString().contains("Boton")){
+                partida.reiniciarJuego();
+            }
+            else{
+                Bloque objeto = (Bloque) padre.getUserData();
+                int posX=objeto.getX();
+                int posY=objeto.getY();
+                switch (mouse.getButton()) {
+                    case MouseEvent.BUTTON1:
+                        if (!objeto.getActivado()){ //comprobamos si ya esta activada
+                            partida.procesarAccion(posX, posY, 0); //opcion para descubrir una casilla
                         }
-                        
-                    break;
+                        break;
+                    case MouseEvent.BUTTON3:
+                        if (!objeto.getActivado()){ //comprobamos si no esta activado
+                            partida.procesarAccion(posX, posY, 1); //opcion para marcar una casilla
+                        }
+                        else if(objeto.getMarcado()){ //si esta activado y es con un marca
+                                partida.procesarAccion(posX, posY, 2); //opción para desmarcar casilla
+                            }
+
+                        break;
+                }
             }
         }
         
