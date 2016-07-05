@@ -24,72 +24,75 @@ import javax.vecmath.Vector3f;
  */
 public class Partida {
     private Fondo background;
-    Tabla tabla;
-    Color3f color;//color del tablero
-    BranchGroup bgFlexible,bg;
+    private Tabla tabla;
+    private Color3f color;//color del tablero
+    private BranchGroup bgFlexible,bg;
+    private boolean partidaTerminada;
     
     public Partida() throws IOException{
+        
+        partidaTerminada=false;
+        //Creamos el canvas
+        Canvas3D canvas = new Canvas3D (SimpleUniverse.getPreferredConfiguration());
+        canvas.setSize(1000, 800);
 
-    Canvas3D canvas = new Canvas3D (SimpleUniverse.getPreferredConfiguration());
-    canvas.setSize(1000, 800);
+        // Se construyen las ventanas de visualización
+        Visualization visualizationWindow = new Visualization (canvas,1000,800,750,0);
 
-    // Se construyen las ventanas de visualización
-    Visualization visualizationWindow = new Visualization (canvas,1000,800,750,0);
-     
-    // Se crea el universo
-    VirtualUniverse universe = new VirtualUniverse();
-    Locale local=new Locale(universe);
-    
-    //Camaras posicionada mirando al tablero
-    Camara camaraJuego=new Camara(canvas, 60.0f, 0.02f, 40.0f,0.01f,45,new Point3d(0.0,58.0,1.0), new Point3d(0.0,0.0,0.0), new Vector3d(0,1,0));
-    
-    //Compilamos todas las camaras
-    camaraJuego.compile();
-    
-    //Se crea la luz ambiental y la compilamos
-    Luz aLight= new Luz();
-    aLight.compile();
-    
-    // Se crea y se añade el fondo y la compilamos
-    background = new Fondo();
-    background.compile();
+        // Se crea el universo
+        VirtualUniverse universe = new VirtualUniverse();
+        Locale local=new Locale(universe);
 
-    //Color del tablero
-   color=new Color3f(0.2f, 0.9f, 0.2f);
-   tabla=new Tabla(color,16,40);
-   
-    bg=new BranchGroup();
-    bg.setCapability(Group.ALLOW_CHILDREN_WRITE);
-    bg.setCapability(Group.ALLOW_CHILDREN_EXTEND);
-   
-    //bg que nos permite eliminar la tabla y crear otra
-    bgFlexible=new BranchGroup();
-    bgFlexible.setCapability(BranchGroup.ALLOW_DETACH);
-    bgFlexible.addChild(tabla);    
-    
-    bg.addChild(bgFlexible);
-    //Añadimos el picking al bg
-    Picking picar=new Picking(canvas,this);
-    picar.setSchedulingBounds(new BoundingSphere(new Point3d(0,0,0),300.0f));
-    picar.setStatus(bg);
-    
-    bg.addChild(picar);
-    
-    //Compilamos los BranchGroup
-    bg.compile();
-    
+        //Camaras posicionada mirando al tablero
+        Camara camaraJuego=new Camara(canvas, 60.0f, 0.02f, 40.0f,0.01f,45,new Point3d(0.0,58.0,1.0), new Point3d(0.0,0.0,0.0), new Vector3d(0,1,0));
 
-    
-    
-    //Añadimos nuestros tableros al locale
-    local.addBranchGraph(bg);
-    //Añadimos al locale los branchgraph, luz ambiental fondo y cartel
-    local.addBranchGraph(aLight);
-    local.addBranchGraph(background);
-    //Añadimos nuestras camaras al locale
-    local.addBranchGraph(camaraJuego);
-    // Se muestra la ventana
-    visualizationWindow.setVisible(true);
+        //Compilamos todas las camaras
+        camaraJuego.compile();
+
+        //Se crea la luz ambiental y la compilamos
+        Luz aLight= new Luz();
+        aLight.compile();
+
+        // Se crea y se añade el fondo y la compilamos
+        background = new Fondo();
+        background.compile();
+
+        //Color del tablero
+       color=new Color3f(0.2f, 0.9f, 0.2f);
+       tabla=new Tabla(color,16,40);
+
+        bg=new BranchGroup();
+        bg.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        bg.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+
+        //bg que nos permite eliminar la tabla y crear otra
+        bgFlexible=new BranchGroup();
+        bgFlexible.setCapability(BranchGroup.ALLOW_DETACH);
+        bgFlexible.addChild(tabla);    
+
+        bg.addChild(bgFlexible);
+        //Añadimos el picking al bg
+        Picking picar=new Picking(canvas,this);
+        picar.setSchedulingBounds(new BoundingSphere(new Point3d(0,0,0),300.0f));
+        picar.setStatus(bg);
+
+        bg.addChild(picar);
+
+        //Compilamos los BranchGroup
+        bg.compile();
+
+
+
+
+        //Añadimos nuestros tableros al locale
+        local.addBranchGraph(bg);
+        //Añadimos al locale los branchgraph, luz ambiental fondo y cartel
+        local.addBranchGraph(aLight);
+        local.addBranchGraph(background);
+        //Añadimos nuestras camaras al locale
+        local.addBranchGraph(camaraJuego);
+        // Se muestra la ventana
+        visualizationWindow.setVisible(true);
     }
     
     
@@ -99,12 +102,18 @@ public class Partida {
     * es la opc 1 es marcar la casilla como bomba
     */
     void procesarAccion(int posx,int posy,int opc){
-    if(opc==0)// Se pulsa una casilla para ver si hay bomba o no
-        tabla.actualizarTabla(posx, posy);
-    else if(opc==1)//Se marca una casilla como una bandera
-        tabla.setMarca(posx,posy);
-        else
-            tabla.setNoMarca(posx, posy);
+        if(!partidaTerminada){
+            if(opc==0)// Se pulsa una casilla para ver si hay bomba o no
+                partidaTerminada=tabla.actualizarTabla(posx, posy);
+            else if(opc==1)//Se marca una casilla como una bandera
+                tabla.setMarca(posx,posy);
+                else// Se desmarca una casilla que estaba marcada como una bandera
+                    tabla.setNoMarca(posx, posy);
+            if(!partidaTerminada && tabla.getGanador()){
+                partidaTerminada=true;
+                tabla.setBoton("imgs/boton02.png");
+            }
+        }
     }
     
     /**
@@ -119,6 +128,8 @@ public class Partida {
         tabla=new Tabla(color,16,40);
         bgFlexible.addChild(tabla);
         bg.addChild(bgFlexible);
+        
+        partidaTerminada=false;
         //tabla=new Tabla(color,16,40);
         //rotacion.addChild(tabla);
     }

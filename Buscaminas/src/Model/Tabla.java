@@ -24,17 +24,22 @@ import javax.vecmath.Vector3f;
  */
 public class Tabla extends BranchGroup{
     
-    private ArrayList<ArrayList<Bloque>> matrizBloques;
-    private ArrayList<ArrayList<Integer>> matrizMinas;
-    private int tamTablero;
-    private int numMinas;
+    private ArrayList<ArrayList<Bloque>> matrizBloques; //matriz de bloques de la partida
+    private ArrayList<ArrayList<Integer>> matrizMinas;  //matriz de minas de la partida
+    private int tamTablero;       //tamaño del tablero que tendra la partida
+    private int numMinas;         //numero de minas que tendra la partida
+    private Boton boton;          //boton para el reinicio del juego
+    private int nCasillasActivas; //nos permite saber cuando ha finalizado el juego
     
     public Tabla(Color3f colorp,int tam,int nminas){
         tamTablero=tam;
         numMinas=nminas;
         matrizMinas=new ArrayList<ArrayList<Integer>>();
+        nCasillasActivas=tam*tam;
         
+        //Generamos la disposición de las minas
         generarMinas();
+        
         Appearance ap=new Appearance();
         ap.setPolygonAttributes(new PolygonAttributes(PolygonAttributes.POLYGON_FILL, PolygonAttributes.CULL_BACK, 0.0f));
         ColoringAttributes color=new ColoringAttributes(colorp ,ColoringAttributes.SHADE_FLAT);
@@ -50,6 +55,7 @@ public class Tabla extends BranchGroup{
         //correspondiente
         Vector3f vector=new Vector3f(-15.0f,2.0f,-14f);
         
+        //Vamos posicionando cada elemento en el tablero
         for(int i=0;i<tamTablero;i++){
             vector.x=-15f;
             auxArray=new ArrayList<Bloque>();
@@ -61,7 +67,10 @@ public class Tabla extends BranchGroup{
             matrizBloques.add(auxArray);
            vector.z+=2;
         }
-        this.addChild(new Boton(new Vector3f(0.0f,1.0f,-16.5f),"imgs/boton01.png"));
+        
+        //Añadimos el boton para reiniciar el juego
+        boton=new Boton(new Vector3f(0.0f,1.0f,-16.5f),"imgs/boton01.png");
+        this.addChild(boton);
         this.addChild(box);
         
     }  
@@ -72,6 +81,7 @@ public class Tabla extends BranchGroup{
     */
     public void setAcierto(int x,int y,int valor){
         matrizBloques.get(y).get(x).activarAcierto(valor);
+        nCasillasActivas--;
     }
     
     /**
@@ -88,6 +98,7 @@ public class Tabla extends BranchGroup{
     */
     public void setMarca(int x,int y){
         matrizBloques.get(y).get(x).activarMarca();
+        nCasillasActivas--;
     }
     
     /**
@@ -96,9 +107,27 @@ public class Tabla extends BranchGroup{
     */
     public void setNoMarca(int x,int y){
         matrizBloques.get(y).get(x).desactivarMarca();
+        nCasillasActivas++;
     }
     
+    /**
+     * Cambia la textura del boton por el fichero pasado por parametro
+     */
+    public void setBoton(String textura){
+        boton.setTextura(textura);
+    }
     
+    /**
+     * Comprueba si ha ganado la partida o no, en caso de que haya ganador devuelve true
+     */
+    public boolean getGanador(){
+        boolean salida=false;
+        
+        if(nCasillasActivas==0)
+            salida=true;
+        
+        return salida;
+    }
     /**
     * genera el mapa de juego, la posición de las minas
     * y calcula el nº de minas alrededor de cada casilla
@@ -175,17 +204,23 @@ public class Tabla extends BranchGroup{
     
     /**
     * Comprueba si hay una mina en la posición seleccionada y sino la hay 
-    * es un acierto.
+    * es un acierto. Deolvemos un boolean para saber si ha seleccionado en una bomba
     */
-    public void actualizarTabla(int x,int y){
-        if(matrizMinas.get(y).get(x)==9)
+    public boolean actualizarTabla(int x,int y){
+        System.out.println("Nºcasillas :"+nCasillasActivas);
+        boolean salida=false;
+        if(matrizMinas.get(y).get(x)==9){
             setBomba(x,y);
+            boton.setTextura("imgs/boton03.png");
+            salida=true;
+        }
         else if(matrizMinas.get(y).get(x)==0){
                 activarSinMina(x,y);
         }
         else
             setAcierto(x,y,matrizMinas.get(y).get(x));
-    
+        
+        return salida;
     }
     
     /**
